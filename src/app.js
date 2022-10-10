@@ -4,13 +4,38 @@
  */
 
 import { SharedMap } from "fluid-framework";
-import { TinyliciousClient } from "@fluidframework/tinylicious-client";
+import { AzureClient } from "@fluidframework/azure-client";
+import { InsecureTokenProvider } from "@fluidframework/test-client-utils"
 
-export const diceValueKey = "dice-value-key";
+// The config is set to run against a local service by default.
+const serviceConfig = {
+    connection: {
+        type: "local",
+        tokenProvider: new InsecureTokenProvider("" , { id: "userId" }),
+        endpoint: "http://localhost:7070",
+    }
+};
+
+
+/** 
+ * To connect to an Azure Fluid Relay tenant comment out the local serviceConfig above and uncomment the serviceConfig below.
+ * Update the corresponding properties below with your tenant specific information to run against your tenant.
+ */ 
+// const serviceConfig = {
+//     connection: {
+//         type: "remote",
+//         tenantId: "", // REPLACE WITH YOUR TENANT ID
+//         tokenProvider: new InsecureTokenProvider("" /* REPLACE WITH YOUR PRIMARY KEY */, { id: "userId" }),
+//         endpoint: "", // REPLACE WITH YOUR AZURE ENDPOINT
+//     }
+// };
+
+const client = new AzureClient(serviceConfig);
+
+const diceValueKey = "dice-value-key";
 
 // Load container and render the app
 
-const client = new TinyliciousClient();
 const containerSchema = {
     initialObjects: { diceMap: SharedMap }
 };
@@ -40,7 +65,10 @@ async function start() {
 
 start().catch((error) => console.error(error));
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8173543a9efe1210a15f1d5b085682b33d793026
 // Define the view
 
 const template = document.createElement("template");
